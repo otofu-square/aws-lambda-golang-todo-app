@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+main
 
 # Test binary, build with `go test -c`
 *.test
@@ -15,3 +16,6 @@
 
 # dep
 vendor
+
+# AWS SAM
+.template.yml
