@@ -1,0 +1,13 @@
+#!/bin/sh -eu
+
+GOARCH=amd64 GOOS=linux go build -o main
+
+aws cloudformation package \
+    --template-file template.yml \
+    --s3-bucket ${BUCKET_NAME} \
+    --output-template-file .template.yml
+
+aws cloudformation deploy \
+    --template-file .template.yml \
+    --stack-name ${BUCKET_NAME} \
+    --capabilities CAPABILITY_IAM

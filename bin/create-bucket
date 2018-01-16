@@ -1,0 +1,7 @@
+#!/bin/sh -eu
+
+if [ -z "${BUCKET_NAME}" ]; then
+  echo 'Set BUCKET_NAME variable in .envrc'
+fi
+
+aws s3 mb s3://${BUCKET_NAME}
