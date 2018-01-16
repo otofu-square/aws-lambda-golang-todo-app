@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Simple Todo Application
+Resources:
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      Runtime: go1.x
+      CodeUri: .
+      Timeout: 5
+      MemorySize: 1024
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: post
