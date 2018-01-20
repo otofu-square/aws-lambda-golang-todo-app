@@ -8,14 +8,49 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/corehandlers","aws/credentials","aws/credentials/ec2rolecreds","aws/credentials/endpointcreds","aws/credentials/stscreds","aws/defaults","aws/ec2metadata","aws/endpoints","aws/request","aws/session","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/json/jsonutil","private/protocol/jsonrpc","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/xml/xmlutil","service/dynamodb","service/dynamodb/dynamodbattribute","service/dynamodb/dynamodbiface","service/sts"]
+  revision = "9ed0c8de252f04ac45a65358377103d5a1aa2d92"
+  version = "v1.12.66"
+
+[[projects]]
+  name = "github.com/cenkalti/backoff"
+  packages = ["."]
+  revision = "61153c768f31ee5f130071d08fc82b85208528de"
+  version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/go-ini/ini"
+  packages = ["."]
+  revision = "32e4c1e6bc4e7d0d8451aa6b75200d19e37a536a"
+  version = "v1.32.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/guregu/dynamo"
+  packages = [".","internal/exprs"]
+  revision = "78f36f7876767b1899b4bac7381d109fe5a58539"
+
+[[projects]]
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  revision = "0b12d6b5"
+
+[[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
   version = "v1.2.0"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8b47067e5e514c2289b2d01505a767f68ac9c2a7dae39c05f363b216e6f58510"
+  inputs-digest = "ea15eb8099321e7b37ca501f721a01d0964a272cce94566055f1c846b000608c"
   solver-name = "gps-cdcl"
   solver-version = 1
