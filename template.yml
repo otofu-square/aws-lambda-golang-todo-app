@@ -2,17 +2,22 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Simple Todo Application
 Resources:
-  HelloFunction:
+  Create:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: main
+      Handler: create
       Runtime: go1.x
       CodeUri: .
       Timeout: 5
       MemorySize: 1024
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
       Events:
-        GetResource:
+        CreateEvent:
           Type: Api
           Properties:
-            Path: /hello
+            Path: /todos
             Method: post
+  Table:
+    Type: AWS::Serverless::SimpleTable
