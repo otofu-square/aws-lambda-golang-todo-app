@@ -62,6 +62,26 @@ Resources:
           Properties:
             Path: /todos/{id}
             Method: get
+  Update:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: update
+      Runtime: go1.x
+      CodeUri: ./build
+      Timeout: 5
+      MemorySize: 1024
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+      Events:
+        CreateEvent:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: PATCH
   Table:
      Type: AWS::Serverless::SimpleTable
      Properties:
