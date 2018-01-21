@@ -10,6 +10,7 @@ Resources:
       CodeUri: .
       Timeout: 5
       MemorySize: 1024
+      Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
@@ -20,4 +21,11 @@ Resources:
             Path: /todos
             Method: post
   Table:
-    Type: AWS::Serverless::SimpleTable
+     Type: AWS::Serverless::SimpleTable
+     Properties:
+       PrimaryKey:
+         Name: ID
+         Type: String
+       ProvisionedThroughput:
+         ReadCapacityUnits: 1
+         WriteCapacityUnits: 1
