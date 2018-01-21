@@ -42,6 +42,26 @@ Resources:
           Properties:
             Path: /todos
             Method: get
+  Show:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: show
+      Runtime: go1.x
+      CodeUri: ./build
+      Timeout: 5
+      MemorySize: 1024
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+      Events:
+        CreateEvent:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: get
   Table:
      Type: AWS::Serverless::SimpleTable
      Properties:
