@@ -1,4 +1,4 @@
-package util
+package handlers
 
 import (
 	"os"
