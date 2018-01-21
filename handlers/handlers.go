@@ -33,8 +33,7 @@ func CreateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return createErrorResponse(err.Error(), 502)
 	}
 
-	responseJSON, _ := json.Marshal(todo)
-	return createResponse(string(responseJSON), 201)
+	return createResponse(EncodeTodoJSON(todo), 201)
 }
 
 func DeleteHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -48,8 +47,7 @@ func DeleteHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return createErrorResponse("Couldn't delete.", 502)
 	}
 
-	responseJSON, _ := json.Marshal(todo)
-	return createResponse(string(responseJSON), 200)
+	return createResponse(EncodeTodoJSON(&todo), 200)
 }
 
 func IndexHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -58,8 +56,7 @@ func IndexHandler(ctx context.Context, request events.APIGatewayProxyRequest) (e
 		return createErrorResponse(err.Error(), 404)
 	}
 
-	responseJSON, _ := json.Marshal(todos)
-	return createResponse(string(responseJSON), 200)
+	return createResponse(EncodeTodosJSON(&todos), 200)
 }
 
 func ShowHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -73,8 +70,7 @@ func ShowHandler(ctx context.Context, request events.APIGatewayProxyRequest) (ev
 		return createErrorResponse(err.Error(), 404)
 	}
 
-	responseJSON, _ := json.Marshal(todo)
-	return createResponse(string(responseJSON), 200)
+	return createResponse(EncodeTodoJSON(&todo), 200)
 }
 
 func UpdateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -98,6 +94,5 @@ func UpdateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return createErrorResponse(err.Error(), 502)
 	}
 
-	responseJSON, _ := json.Marshal(todo)
-	return createResponse(string(responseJSON), 200)
+	return createResponse(EncodeTodoJSON(&todo), 200)
 }

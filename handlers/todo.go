@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -24,4 +25,14 @@ func NewTodo(title string, completed bool) *Todo {
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
+}
+
+func EncodeTodoJSON(todo *Todo) string {
+	encodedTodo, _ := json.Marshal(todo)
+	return string(encodedTodo)
+}
+
+func EncodeTodosJSON(todos *[]Todo) string {
+	encodedTodo, _ := json.Marshal(todos)
+	return string(encodedTodo)
 }
