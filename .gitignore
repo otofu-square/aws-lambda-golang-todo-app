@@ -19,3 +19,6 @@ vendor
 
 # AWS SAM
 .template.yml
+
+# Build files
+build

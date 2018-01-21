@@ -3,8 +3,8 @@
 export GOARCH=amd64
 export GOOS=linux
 
-go build -o create handlers/create/main.go
-go build -o index handlers/index/main.go
+go build -o build/create handlers/create/main.go
+go build -o build/index handlers/index/main.go
 
 aws cloudformation package \
     --template-file template.yml \

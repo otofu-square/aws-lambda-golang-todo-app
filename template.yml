@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: create
       Runtime: go1.x
-      CodeUri: .
+      CodeUri: ./build
       Timeout: 5
       MemorySize: 1024
       Policies:
@@ -27,7 +27,7 @@ Resources:
     Properties:
       Handler: index
       Runtime: go1.x
-      CodeUri: .
+      CodeUri: ./build
       Timeout: 5
       MemorySize: 1024
       Policies:
