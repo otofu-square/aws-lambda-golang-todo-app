@@ -1,0 +1,4 @@
+#!/bin/sh -eu
+
+aws cloudformation delete-stack \
+    --stack-name ${BUCKET_NAME}
