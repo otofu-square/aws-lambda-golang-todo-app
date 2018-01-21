@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -12,73 +13,79 @@ type RequestJSON struct {
 	Completed bool   `json:"completed"`
 }
 
+func createResponse(body string, status int) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{Body: body, StatusCode: status}, nil
+}
+
+func createErrorResponse(errorMsg string, status int) (events.APIGatewayProxyResponse, error) {
+	body := fmt.Sprintf("{\"error\": \"%s\"}", errorMsg)
+	return createResponse(body, status)
+}
+
 func CreateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var requestJSON RequestJSON
 	if err := json.Unmarshal([]byte(request.Body), &requestJSON); err != nil {
-		return events.APIGatewayProxyResponse{Body: "Bad Request", StatusCode: 400}, nil
+		return createErrorResponse("Bad Request", 400)
 	}
 
 	todo := NewTodo(requestJSON.Title, requestJSON.Completed)
 	if err := DynamoDB().Put(todo).Run(); err != nil {
-		return events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: 502}, nil
+		return createErrorResponse(err.Error(), 502)
 	}
 
 	responseJSON, _ := json.Marshal(todo)
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 201}, nil
+	return createResponse(string(responseJSON), 201)
 }
 
 func DeleteHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	id := request.PathParameters["id"]
 	if id == "" {
-		errorMsg := "{\"error\": \"ID is empty.\"}"
-		return events.APIGatewayProxyResponse{Body: errorMsg, StatusCode: 400}, nil
+		return createErrorResponse("ID is empty.", 400)
 	}
 
 	var todo Todo
 	if err := DynamoDB().Delete("ID", id).OldValue(&todo); err != nil {
-		return events.APIGatewayProxyResponse{Body: "Couldn't delete.", StatusCode: 502}, nil
+		return createErrorResponse("Couldn't delete.", 502)
 	}
 
 	responseJSON, _ := json.Marshal(todo)
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
+	return createResponse(string(responseJSON), 200)
 }
 
 func IndexHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var todos []Todo
 	if err := DynamoDB().Scan().All(&todos); err != nil {
-		return events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: 404}, nil
+		return createErrorResponse(err.Error(), 404)
 	}
 
 	responseJSON, _ := json.Marshal(todos)
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
+	return createResponse(string(responseJSON), 200)
 }
 
 func ShowHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	id := request.PathParameters["id"]
 	if id == "" {
-		errorMsg := "{\"error\": \"ID is empty.\"}"
-		return events.APIGatewayProxyResponse{Body: errorMsg, StatusCode: 400}, nil
+		return createErrorResponse("ID is empty.", 400)
 	}
 
 	var todo Todo
 	if err := DynamoDB().Get("ID", id).One(&todo); err != nil {
-		return events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: 404}, nil
+		return createErrorResponse(err.Error(), 404)
 	}
 
 	responseJSON, _ := json.Marshal(todo)
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
+	return createResponse(string(responseJSON), 200)
 }
 
 func UpdateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	id := request.PathParameters["id"]
 	if id == "" {
-		errorMsg := "{\"error\": \"ID is empty.\"}"
-		return events.APIGatewayProxyResponse{Body: errorMsg, StatusCode: 400}, nil
+		return createErrorResponse("ID is empty.", 400)
 	}
 
 	var requestJSON RequestJSON
 	if err := json.Unmarshal([]byte(request.Body), &requestJSON); err != nil {
-		return events.APIGatewayProxyResponse{Body: "Bad Request", StatusCode: 400}, nil
+		return createErrorResponse("Bad Request.", 400)
 	}
 
 	var todo Todo
@@ -88,9 +95,9 @@ func UpdateHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 		Set("Completed", requestJSON.Completed).
 		Value(&todo)
 	if err != nil {
-		return events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: 502}, nil
+		return createErrorResponse(err.Error(), 502)
 	}
 
 	responseJSON, _ := json.Marshal(todo)
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
+	return createResponse(string(responseJSON), 200)
 }
