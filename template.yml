@@ -10,7 +10,9 @@ Resources:
       CodeUri: .
       Timeout: 5
       MemorySize: 1024
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
@@ -20,6 +22,26 @@ Resources:
           Properties:
             Path: /todos
             Method: post
+  Index:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index
+      Runtime: go1.x
+      CodeUri: .
+      Timeout: 5
+      MemorySize: 1024
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref Table
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+      Events:
+        CreateEvent:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: get
   Table:
      Type: AWS::Serverless::SimpleTable
      Properties:
