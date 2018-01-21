@@ -4,6 +4,7 @@ export GOARCH=amd64
 export GOOS=linux
 
 go build -o build/create handlers/create/main.go
+go build -o build/delete handlers/delete/main.go
 go build -o build/index handlers/index/main.go
 go build -o build/show handlers/show/main.go
 go build -o build/update handlers/update/main.go
